@@ -16,7 +16,7 @@ const WelcomePage = () => {
             <div className='flex-1 md:w-1/2 p-1'>
                 <video src={video2} autoPlay loop muted  className='w-full h-auto rounded-lg' />
             </div>
-            <div className='flex-1 md:w-1/2 rounded-lg p-1 ml-0 md:ml-4 ml-9'>
+            <div className='flex-1 md:w-1/2 rounded-lg p-1 ml-0 md:ml-0 lg:ml-9'>
                 <Typography variant="h1" color="gray" className="mt-4 md:mt-2 lg:mt-0 mb-2 uppercase text-left text-1xl md:text-2xl lg:text-2xl font-bold tracking-wide leading-tight">
                     Welcome To Trip Genius.
                 </Typography>

@@ -90,7 +90,7 @@ const NavBar = () => {
     }, []);
    
     return (
-      <div className="mx-auto px-6 py-3">
+      <div className="mx-auto px-2 py-2">
         <div className="flex items-center justify-between text-blue-gray-900">
             <div className="flex items-center">
                 <img src={logo} alt="!Error" className="w-6 h-6" />
