@@ -97,7 +97,7 @@ const NavBar = () => {
                 <Typography
                     as="a"
                     href="#"
-                    variant="h3"
+                    variant="h5"
                     className="ml-4 cursor-pointer py-1.5"
                 >
                     Trip Genius

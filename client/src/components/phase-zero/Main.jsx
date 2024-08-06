@@ -4,6 +4,8 @@ import NavBar from '../phase-one/NavBar';
 import Home from '../phase-one/Home';
 import WelcomePage from '../phase-one/Welcomepage';
 import HowItWorks from '../phase-one/HowItWorks';
+import Footer from '../phase-one/Footer';
+import AppAlert from '../phase-one/AppAlert';
 
 {/*import Banners from '../phase-one/Banners';*/}
 
@@ -17,6 +19,8 @@ const Main = () => {
       <Home />
       <WelcomePage />
       <HowItWorks />
+      <AppAlert />
+      <Footer />
       {/*<Banners />*/}
     </>
   );
