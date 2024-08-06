@@ -74,7 +74,7 @@ const HowItWorks = () => {
               {cards.map((card, index) => (
                 <Card
                   key={index}
-                  className={`transition-transform duration-500 ease-in-out absolute top-1/2 transform -translate-y-1/2 ${
+                  className={`transition-transform duration-500 ease-in-out absolute top-1/2 transform -translate-y-1/2 mt-8 ${
                     index === currentIndex ? 'z-10 scale-100' : 'z-0 scale-90 blur-sm'
                   }`}
                   style={{ left: `${(index - currentIndex) * 100}%` }}

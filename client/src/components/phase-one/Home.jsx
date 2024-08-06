@@ -10,7 +10,7 @@ const Home = () => {
     <>
       <div className='mx-auto mt-4 md:mt-6 lg:mt-0 mb-8'>
         <div className='flex flex-col md:flex-row justify-between items-center'>
-        <div className='flex-1 md:w-1/2 rounded-lg p-1 ml-0 md:ml-4 ml-9'>
+        <div className='flex-1 md:w-1/2 rounded-lg p-1 ml-0 md:ml-0 lg:ml-9'>
             <Typography variant="h1" color="blue-gray" className="mb-1 uppercase text-left text-1xl md:text-2xl lg:text-3xl font-bold tracking-wide leading-tight">
                 Time to Explore, Travel, and Enjoy!
             </Typography>
