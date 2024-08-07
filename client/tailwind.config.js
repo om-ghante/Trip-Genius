@@ -14,10 +14,7 @@ module.exports = withMT({
       },
       inset: {
         '1/2.8': '20%', 
-      },
-      spacing: {
-        '10': '90px',
-      },
+      }
     },
     
   },

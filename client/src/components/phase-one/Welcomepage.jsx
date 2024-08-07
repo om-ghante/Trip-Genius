@@ -28,21 +28,21 @@ const WelcomePage = () => {
                 </Typography>
                 <div className="w-full flex justify-start p-4">
                     <ul className="">
-                        <li className="flex items-center space-x-2 ">
+                        <li className="flex items-center space-x-2">
                         <Checkbox defaultChecked disabled />
-                        <Typography variant='paragraph' className='text-lg'>AI driven recommendations.</Typography>
+                        <Typography variant='paragraph' className='text-lg text-left'>AI driven recommendations.</Typography>
                         </li>
                         <li className="flex items-center space-x-2">
                         <Checkbox defaultChecked disabled />
-                        <Typography variant='paragraph' className='text-lg'>Real time travel updates.</Typography>
+                        <Typography variant='paragraph' className='text-lg text-left'>Real time travel updates.</Typography>
                         </li>
                         <li className="flex items-center space-x-2 ">
                         <Checkbox defaultChecked disabled />
-                        <Typography variant='paragraph' className='text-lg'>Budget tracking.</Typography>
+                        <Typography variant='paragraph' className='text-lg text-left'>Budget tracking.</Typography>
                         </li>
                         <li className="flex items-center space-x-2 ">
                         <Checkbox defaultChecked disabled />
-                        <Typography variant='paragraph' className='text-lg'>Route Planner.</Typography>
+                        <Typography variant='paragraph' className='text-lg text-left'>Route Planner.</Typography>
                         </li>
                     </ul>
                 </div>
