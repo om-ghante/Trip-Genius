@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const User = require('../models/users');
 
-// User Login endpoint
+// code for login functionality
 router.post('/login', async (req, res) => {
     console.log("login");
     const { useremail, usercreatedpass } = req.body;
@@ -21,7 +21,7 @@ router.post('/login', async (req, res) => {
     }
 });
 
-// User registration endpoint
+// code for register functionality
 router.post('/register', async (req, res) => {
     console.log("register");
     const { userfullname, useremail, userphone, usercreatedpass, userfinalpass } = req.body;
