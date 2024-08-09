@@ -14,7 +14,11 @@ app.get('/', (req, res) => {
 });
 
 app.use(bodyParser.json());
-app.use(cors());
+app.use(cors({
+    origin: process.env.ORIGIN_API, 
+    methods: "GET,POST,PUT,DELETE",
+    credentials: true
+}));
 app.use('/auth', AuthRouter);
 app.use('/products', ProductRouter);
 

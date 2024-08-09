@@ -38,6 +38,8 @@ const Register = ({ closePopup, openPopup }) => {
         setSignupInfo(copySignupInfo);
     }
 
+    const server_api = import.meta.env.VITE_SERVER_API;
+    
     const handleSubmit = async (e) => {
         e.preventDefault();
         const { name, email, phone, pass, password } = signupInfo;
@@ -48,7 +50,7 @@ const Register = ({ closePopup, openPopup }) => {
             return handleError('Passwords do not match');
         }        
         try {
-            const url = `http://localhost:7173/auth/signup`;
+            const url = `${server_api}/auth/signup`;
             const response = await fetch(url, {
                 method: "POST",
                 headers: {

@@ -32,6 +32,8 @@ const Login = ({ closePopup, openrPopup, openfPopup }) => {
         setLoginInfo(copyLoginInfo);
     }
 
+    const server_api = import.meta.env.VITE_SERVER_API;
+    
     const handleSubmit = async (e) => {
         e.preventDefault();
         const { email, password } = loginInfo;
@@ -39,7 +41,7 @@ const Login = ({ closePopup, openrPopup, openfPopup }) => {
             return handleError('email and password are required')
         }
         try {
-            const url = `http://localhost:7173/auth/login`;
+            const url = `${server_api}/auth/login`;
             const response = await fetch(url, {
                 method: "POST",
                 headers: {
