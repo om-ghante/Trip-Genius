@@ -80,7 +80,7 @@ const Register = ({ closePopup, openPopup }) => {
                 console.log('Response:', response);
                 localStorage.setItem('jwtToken', token); 
                 setError('Registration Successful!');
-                navigate('/sample'); 
+                navigate('/dashboard/*'); 
             } catch (error) {
                 console.error('Error:', error);
                 setError('Registration Failed');

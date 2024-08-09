@@ -34,7 +34,7 @@ const Login = ({ closePopup, openrPopup, openfPopup }) => {
             
             if (response.data.success) {
                 setUser(response.data.user);
-                navigate('/sample');
+                navigate('sample');
             } else {
                 setError(response.data.error);
             }
