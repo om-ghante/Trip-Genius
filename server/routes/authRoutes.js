@@ -3,7 +3,8 @@ const router = express.Router();
 const User = require('../models/users');
 
 // User Login endpoint
-router.post('/user/data/login', async (req, res) => {
+router.post('/login', async (req, res) => {
+    console.log("login");
     const { useremail, usercreatedpass } = req.body;
 
     try {
@@ -21,7 +22,8 @@ router.post('/user/data/login', async (req, res) => {
 });
 
 // User registration endpoint
-router.post('/user/data/register', async (req, res) => {
+router.post('/register', async (req, res) => {
+    console.log("register");
     const { userfullname, useremail, userphone, usercreatedpass, userfinalpass } = req.body;
 
     if (usercreatedpass !== userfinalpass) {

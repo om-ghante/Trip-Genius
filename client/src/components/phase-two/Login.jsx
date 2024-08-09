@@ -27,7 +27,7 @@ const Login = ({ closePopup, openrPopup, openfPopup }) => {
 
     const handleSubmit = async () => {
         try {
-            const response = await axios.post(`${apiurl}/api/auth/user/data/login`, {
+            const response = await axios.post(`${apiurl}/auth/login`, {
                 useremail: email,
                 usercreatedpass: password,
             });            

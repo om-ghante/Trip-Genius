@@ -19,9 +19,7 @@ app.get("/", (req, res) => {
     res.status(200).json("server start");
 });
 
-app.use("/api/auth", authRoutes);
-
-app.options("*", cors());
+app.use("/auth", authRoutes);
 
 app.listen(PORT, () => {
     console.log(`server started at port ${PORT}`);
