@@ -1,10 +1,9 @@
-require("dotenv").config();
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
+const url = process.env.DATABASE_API;
 
-const db = process.env.DATABASE_API;
-
-mongoose.connect(db)
-    .then(() => console.log("Database Connected!"))
-    .catch((err) => console.error("Error connecting to the database:", err));
-
-    
+mongoose.connect(url)
+    .then(()=>{
+        console.log('Database Connected!');
+    }).catch((err)=>{
+        console.log('MongoDB connection Error:', err);
+    })

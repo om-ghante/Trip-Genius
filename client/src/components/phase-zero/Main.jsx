@@ -7,6 +7,7 @@ import Footer from '../phase-one/Footer';
 import Login from '../phase-two/Login';
 import Register from '../phase-two/Register';
 import ForgotPass from '../phase-two/ForgotPass';
+import { ToastContainer } from 'react-toastify';
 
 const Main = () => {
   const [ islopen, setLopen ] = useState(false);
@@ -48,6 +49,7 @@ const Main = () => {
             <ForgotPass closePopup={toggleforgotpass} openPopup={toggleloginPopup} />
         )}
 
+      <ToastContainer />
     </>
   );
 }

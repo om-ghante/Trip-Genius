@@ -1,26 +1,24 @@
-require("dotenv").config();
-require("./database/config");
-const express = require("express");
-const cors = require("cors");
-const authRoutes = require('./routes/authRoutes');
-
+const express = require('express');
 const app = express();
-const PORT = process.env.SERVER_PORT;
+const bodyParser = require('body-parser');
+const cors = require('cors');
+const AuthRouter = require('./routes/AuthRouter');
+const ProductRouter = require('./routes/ProductRouter');
 
-app.use(cors({
-    origin: process.env.ORIGIN_API, 
-    methods: "GET,POST,PUT,DELETE",
-    credentials: true
-}));
+require('dotenv').config();
+require('./database/config');
+const PORT = process.env.PORT || 7173;
 
-app.use(express.json());
-
-app.get("/", (req, res) => {
-    res.status(200).json("server start");
+app.get('/', (req, res) => {
+    res.send('Server Started');
 });
 
-app.use("/auth", authRoutes);
+app.use(bodyParser.json());
+app.use(cors());
+app.use('/auth', AuthRouter);
+app.use('/products', ProductRouter);
+
 
 app.listen(PORT, () => {
-    console.log(`server started at port ${PORT}`);
-});
+    console.log(`Server is running on ${PORT}`)
+})

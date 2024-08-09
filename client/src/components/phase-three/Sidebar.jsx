@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useState, useEffect} from "react";
 import {
   Drawer,
   Button,
@@ -24,13 +24,32 @@ import {
 
 } from "@heroicons/react/24/solid";
 import logo from '../../assets/mountain.png';
-import { NavLink, Outlet } from "react-router-dom";
+import { ToastContainer } from 'react-toastify';
+import { handleError, handleSuccess } from '../phase-zero/utils';
+import {useNavigate, NavLink, Outlet } from "react-router-dom";
 import SidebarList from "./SidebarList";
 
 const Sidebar = () => {
     const [openDilog, setDilogOpen] = React.useState(false);
     const [open, setOpen] = React.useState(false);
     const [openAlert, setOpenAlert] = React.useState(false);
+
+    const [loggedInUser, setLoggedInUser] = useState('');
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        setLoggedInUser(localStorage.getItem('loggedInUser'))
+    }, [])
+
+    const handleLogout = (e) => {
+        setDilogOpen(!openDilog)
+        localStorage.removeItem('token');
+        localStorage.removeItem('loggedInUser');
+        handleSuccess('User Loggedout');
+        setTimeout(() => {
+            navigate('/');
+        }, 1000)
+    }
 
     const openDrawer = () => setOpen(true);
     const closeDrawer = () => setOpen(false);
@@ -72,7 +91,7 @@ const Sidebar = () => {
                 </IconButton>
             </div>
         </div>
-
+        <ToastContainer />         
         <div>
             <Outlet />
         </div>
@@ -116,7 +135,7 @@ const Sidebar = () => {
         </Drawer>
         <Dialog open={openDilog} handler={handleDilogOpen}>
             <DialogHeader>
-                <Alert className="rounded-none border-l-4 border-red-500 bg-red-100 font-medium text-red-500" icon={<Icon />}>Are you sure you want to log out?</Alert>
+                <Alert className="rounded-none border-l-4 border-red-500 bg-red-100 font-medium text-red-500" icon={<Icon />}>Hello, {loggedInUser} Are you sure you want to log out?</Alert>
             </DialogHeader>
             <DialogBody>
                 Logging out is a chance to recharge and refocus. Every time you step away, you're preparing for a stronger comeback. See you next time!
@@ -130,7 +149,7 @@ const Sidebar = () => {
             >
                 <span>Cancel</span>
             </Button>
-            <Button variant="outlined" color="red" onClick={handleDilogOpen}>
+            <Button variant="outlined" color="red" onClick={handleLogout}>
                 <span>Log Out</span>
             </Button>
             </DialogFooter>

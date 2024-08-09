@@ -1,4 +1,7 @@
 import React, { useState } from 'react';
+import {useNavigate } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
+import { handleError, handleSuccess } from '../phase-zero/utils';
 import { 
     Input,
     Typography,
@@ -10,83 +13,67 @@ import {
 import { 
     faTimes 
 } from '@fortawesome/free-solid-svg-icons';
-    import { useNavigate } from 'react-router-dom';
-    import { useUser } from '../context/useContext';
-    import axios from 'axios';
 
 const Register = ({ closePopup, openPopup }) => {
-    const { setUser } = useUser();
-    const [formData, setFormData] = useState({
-        userfullname: '',
-        useremail: '',
-        userphone: '',
-        usercreatedpass: '',
-        userfinalpass: '',
-    });
-    const [errors, setErrors] = useState({});
-    const [error, setError] = useState('');
-    const navigate = useNavigate();
+    const [signupInfo, setSignupInfo] = useState({
+        name: '',
+        email: '',
+        phone: '',
+        pass: '',
+        password: ''
+    })
 
     const switchpage = () => {
         closePopup();
         openPopup();
     };
 
+    const navigate = useNavigate();
+
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setFormData({
-            ...formData,
-            [name]: value,
-        });
-    };
+        console.log(name, value);
+        const copySignupInfo = { ...signupInfo };
+        copySignupInfo[name] = value;
+        setSignupInfo(copySignupInfo);
+    }
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const newErrors = {};
-    
-        Object.keys(formData).forEach((key) => {
-            if (!formData[key]) {
-                newErrors[key] = 'This field is required';
+        const { name, email, phone, pass, password } = signupInfo;
+        if (!name || !email || !phone || !password) {
+            return handleError('name, email and password are required')
+        }
+        if (pass !== password) {
+            return handleError('Passwords do not match');
+        }        
+        try {
+            const url = `http://localhost:7173/auth/signup`;
+            const response = await fetch(url, {
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ name, email, phone, password })
+            });
+            const result = await response.json();
+            const { success, message, error } = result;
+            if (success) {
+                handleSuccess(message);
+                setTimeout(() => {
+                    navigate('/dashboard/*')
+                }, 1000)
+            } else if (error) {
+                const details = error?.details[0].message;
+                handleError(details);
+            } else if (!success) {
+                handleError(message);
             }
-        });
-    
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailRegex.test(formData.useremail)) {
-            newErrors.useremail = 'Invalid email format';
+            console.log(result);
+        } catch (err) {
+            handleError(err);
         }
-    
-        if (formData.usercreatedpass !== formData.userfinalpass) {
-            newErrors.userfinalpass = 'Passwords do not match';
-        }
-    
-        const apiurl = import.meta.env.VITE_SERVER_API;
-    
-        setErrors(newErrors);
-    
-        if (Object.keys(newErrors).length === 0) {
-            try {
-                const response = await axios.post(
-                    `${apiurl}/auth/register`,
-                    formData,
-                    {
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                    }
-                );
-                const { user, token } = response.data; 
-                console.log('User Data:', user);
-                setUser(user);
-                console.log('Response:', response);
-                localStorage.setItem('jwtToken', token); 
-                setError('Registration Successful!');
-                navigate('/dashboard/*'); 
-            } catch (error) {
-                console.error('Error:', error);
-                setError('Registration Failed');
-            }
-        }
-    };
+    }
 
     return (
         <div className="fixed inset-0 bg-gray-800 bg-opacity-75 flex justify-center items-center">
@@ -100,16 +87,15 @@ const Register = ({ closePopup, openPopup }) => {
                     </Typography>
                 </div>
                 <div className='flex w-27 flex-col item-end gap-4 mt-5 mb-40'>
-                    <Input label='Full Name' name='userfullname' value={formData.userfullname} onChange={handleChange} />
-                    {errors.userfullname && <Typography variant='small' className='text-red-500'>{errors.userfullname}</Typography>}
-                    <Input label='Email' name='useremail' value={formData.useremail} onChange={handleChange}/>
-                    {errors.useremail && <Typography variant='small' className='text-red-500'>{errors.useremail}</Typography>}
-                    <Input label='Phone' name='userphone' value={formData.userphone} onChange={handleChange}/>
-                    {errors.userphone && <Typography variant='small' className='text-red-500'>{errors.userphone}</Typography>}
-                    <Input label='Create Password' type='password' name='usercreatedpass' value={formData.usercreatedpass} onChange={handleChange}/>
-                    {errors.usercreatedpass && <Typography variant='small' className='text-red-500'>{errors.usercreatedpass}</Typography>}
-                    <Input label='Re-Enter Password' type='password' name='userfinalpass' value={formData.userfinalpass} onChange={handleChange}/>
-                    {errors.userfinalpass && <Typography variant='small' className='text-red-500'>{errors.userfinalpass}</Typography>}
+                    <Input label='Full Name' name='name' value={signupInfo.name} onChange={handleChange} />
+
+                    <Input label='Email' name='email' value={signupInfo.email} onChange={handleChange}/>
+
+                    <Input label='Phone' name='phone' value={signupInfo.phone} onChange={handleChange}/>
+
+                    <Input label='Create Password' type='password' name='pass'value={signupInfo.pass} onChange={handleChange}/> {/*value={signupInfo.createdpass}*/}
+
+                    <Input label='Re-Enter Password' type='password' name='password' value={signupInfo.password} onChange={handleChange}/>
 
                     <Button className='mt-4' onClick={handleSubmit}>Register</Button>
 
@@ -117,9 +103,9 @@ const Register = ({ closePopup, openPopup }) => {
                         <p>Already have an account?</p>
                         <Typography variant='small' className='ml-1 font-bold cursor-pointer' onClick={switchpage}>Log In</Typography>
                     </Typography>
-                    {error && <Typography variant='small' className='text-red-500 text-center mt-4'>{error}</Typography>}
                 </div>
             </div>
+            <ToastContainer />
         </div>
     );
 };

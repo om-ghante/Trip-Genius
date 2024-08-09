@@ -1,17 +1,16 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import { ToastContainer } from 'react-toastify';
+import { handleError, handleSuccess } from '../phase-zero/utils';
 import { useNavigate } from 'react-router-dom';
-import { useUser } from '../context/useContext';
 import { Input, Typography, Button } from '@material-tailwind/react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 
 const Login = ({ closePopup, openrPopup, openfPopup }) => {
-    const { setUser } = useUser();
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [error, setError] = useState('');
-    const navigate = useNavigate();
+    const [loginInfo, setLoginInfo] = useState({
+        email: '',
+        password: ''
+    })
 
     const switchToForgotPass = () => {
         closePopup();
@@ -23,26 +22,51 @@ const Login = ({ closePopup, openrPopup, openfPopup }) => {
         openrPopup();
     };
 
-    const apiurl = import.meta.env.VITE_SERVER_API;
+    const navigate = useNavigate();
 
-    const handleSubmit = async () => {
-        try {
-            const response = await axios.post(`${apiurl}/auth/login`, {
-                useremail: email,
-                usercreatedpass: password,
-            });            
-            
-            if (response.data.success) {
-                setUser(response.data.user);
-                navigate('sample');
-            } else {
-                setError(response.data.error);
-            }
-        } catch (error) {
-            console.error('Error during login:', error);
-            setError('An error occurred during login.');
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        console.log(name, value);
+        const copyLoginInfo = { ...loginInfo };
+        copyLoginInfo[name] = value;
+        setLoginInfo(copyLoginInfo);
+    }
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        const { email, password } = loginInfo;
+        if (!email || !password) {
+            return handleError('email and password are required')
         }
-    };    
+        try {
+            const url = `http://localhost:7173/auth/login`;
+            const response = await fetch(url, {
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(loginInfo)
+            });
+            const result = await response.json();
+            const { success, message, jwtToken, name, error } = result;
+            if (success) {
+                handleSuccess(message);
+                localStorage.setItem('token', jwtToken);
+                localStorage.setItem('loggedInUser', name);
+                setTimeout(() => {
+                    navigate('/dashboard/*')
+                }, 1000)
+            } else if (error) {
+                const details = error?.details[0].message;
+                handleError(details);
+            } else if (!success) {
+                handleError(message);
+            }
+            console.log(result);
+        } catch (err) {
+            handleError(err);
+        }
+    }
 
     return (
         <div className="fixed inset-0 bg-gray-800 bg-opacity-75 flex justify-center items-center">
@@ -54,19 +78,21 @@ const Login = ({ closePopup, openrPopup, openfPopup }) => {
                     <Typography className='uppercase' variant='h3'>
                         Login
                     </Typography>
-                    {error && <Typography color="red" className="mt-4 text-center font-normal">{error}</Typography>}
                 </div>
                 <div className='flex w-27 flex-col gap-4 mt-5 mb-40'>
                     <Input 
                         label='Email, Phone or username' 
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)} 
+                        type='email'
+                        name='email'
+                        value={loginInfo.email}
+                        onChange={handleChange}
                     />
                     <Input 
                         label='Password'
                         type='password'
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)} 
+                        name='password'
+                        value={loginInfo.password}
+                        onChange={handleChange} 
                     />
 
                     <div className="flex justify-between mb-4">
@@ -92,6 +118,7 @@ const Login = ({ closePopup, openrPopup, openfPopup }) => {
                     </Typography>
                 </div>
             </div>
+            <ToastContainer />
         </div>
     );
 };
