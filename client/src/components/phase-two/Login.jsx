@@ -18,15 +18,14 @@ const Login = ({ closePopup, openrPopup, openfPopup }) => {
     const responseGoogle = async (authResult) => {
         try {
             if (authResult.code) {
-                
                 const result = await googleAuth(authResult.code); 
                 const { userCredentialsResult } = result.data;
                 localStorage.setItem('userCredentials', JSON.stringify(userCredentialsResult));
-                handleSuccess('Welcome To Trip Genius!');
                 setTimeout(() => {
+                    const message = "Welcome To Trip Genius!" 
+                    handleSuccess(message);
                     navigate('/dashboard/*')
-                }, 2000)
-
+                }, 1000)
             }
         } catch (err) {
             console.error('Error while requesting Google code', err);

@@ -21,7 +21,7 @@ const signup = async (req, res) => {
         res.status(201).json({
             message: "Signup successful",
             success: true,
-            error,
+            email,
             userCredentialsResult
         });
     } catch (err) {
@@ -53,7 +53,7 @@ const login = async (req, res) => {
         res.status(200).json({
             message: "Login successful",
             success: true,
-            error,
+            email,
             userCredentialsResult
         });
     } catch (err) {
@@ -91,6 +91,7 @@ const googleLogin = async (req, res) => {
         res.status(200).json({
             message: "Welcome To Trip Genius!",
             success: true,
+            email,
             userCredentialsResult
         });
     } catch (err) {
@@ -102,8 +103,28 @@ const googleLogin = async (req, res) => {
     }
 }
 
+const userInfo = async (req, res) => {
+    const { email } = req.query; 
+    if (!email) {
+        return res.status(400).json({ error: 'Email parameter is required' });
+    }
+  
+    try {
+        const user = await UserModel.findOne({ email });
+        if (!user) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+      
+        res.json(user);
+    } catch (error) {
+        console.error('Error fetching user data:', error);
+        res.status(500).json({ error: 'Failed to fetch user data' });
+    }
+};
+
 module.exports = {
     signup,
     login,
-    googleLogin
+    googleLogin,
+    userInfo
 }

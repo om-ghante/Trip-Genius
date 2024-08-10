@@ -13,12 +13,13 @@ const getUserByEmail = async (email) => {
         }
 
         // Prepare userCredentials
-        const { name, email: userEmail, phone, picture } = user;
+        const { name, email: userEmail, phone, password: hashedPassword, image: picture } = user;
         const userCredentials = {
             name,
             email: userEmail,
             phone,
-            picture
+            password: hashedPassword,
+            image: picture
         };
 
         return {

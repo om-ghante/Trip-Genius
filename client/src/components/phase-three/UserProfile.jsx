@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Avatar, Button, Input } from '@material-tailwind/react';
+import { handleError, handleSuccess } from '../phase-zero/utils';
 
 const UserProfile = () => {
   const [isProfileOpen, setProfileOpen] = useState(true);
@@ -10,14 +11,8 @@ const UserProfile = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
 
-  const [userInfo, setUserInfo] = useState(null);
-
-  useEffect (()=>{
-    const data = localStorage.getItem('user-info');
-    const userData = JSON.parse(data);
-    setUserInfo(userData);
-  })
-  
+  const type = localStorage.getItem('userCredentials');
+  const info = JSON.parse(type);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -46,10 +41,7 @@ const UserProfile = () => {
   };
 
   const handleLogout = () => { 
-    setDilogOpen(!openDilog)
-        localStorage.removeItem('token');
-        localStorage.removeItem('loggedInUser');
-        localStorage.removeItem('user-info');
+        localStorage.removeItem('userCredentials');
         handleSuccess('User Loggedout');
         setTimeout(() => {
             navigate('/');
@@ -66,7 +58,7 @@ const UserProfile = () => {
       const response = await fetch(`${import.meta.env.VITE_SERVER_API}/auth/user/update`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: loggedInUser.email, password: newPassword })
+        body: JSON.stringify({ email: info.userCredentials.email, password: newPassword })
       });
       const result = await response.json();
       
@@ -90,19 +82,19 @@ const UserProfile = () => {
           <div className='flex flex-col items-center'>
             {isProfileOpen && (
               <div>
-                <Avatar src={loggedInUser.avatar || ''} alt='Profile' className='w-24 h-24 rounded-full mb-4' />
-                <Input className='text-xl font-semibold mb-2' value={loggedInUser.name || ''} readOnly />
-                <Input className='text-gray-600 mb-2' value={loggedInUser.email || ''} readOnly />
+                <Avatar src={info.userCredentials.image || ''} alt='Profile' className='w-24 h-24 rounded-full mb-4' />
+                <Input className='text-xl font-semibold mb-2' value={info.userCredentials.name || ''} readOnly />
+                <Input className='text-gray-600 mb-2' value={info.userCredentials.email || ''} readOnly />
                 <Input 
-                  type='text' 
-                  value={loggedInUser.phone || ''} 
+                  type={showPassword ? 'text' : 'password'} 
+                  value={info.userCredentials.password || '********'} 
                   placeholder='Phone Number' 
                   className='w-full p-2 border rounded mb-4'
                   readOnly 
                 />
                 <Input 
                   type={showPassword ? 'text' : 'password'} 
-                  value={loggedInUser.password || '********'} 
+                  value={info.userCredentials.password || '********'} 
                   placeholder='Password' 
                   className='w-full p-2 border rounded mb-4'
                   readOnly 
@@ -124,16 +116,16 @@ const UserProfile = () => {
             {isEditProfileOpen && (
               <div>
                 <Button onClick={() => {/* Logic to upload a new profile picture */}}>
-                  <Avatar src={loggedInUser.avatar || ''} alt='Profile' className='w-24 h-24 rounded-full mb-4' />
+                  <Avatar src={info.userCredentials.image || ''} alt='Profile' className='w-24 h-24 rounded-full mb-4' />
                 </Button>
-                <Input className='text-xl font-semibold mb-2' value={loggedInUser.name || ''} readOnly />
-                <Input className='text-gray-600 mb-2' value={loggedInUser.email || ''} readOnly />
+                <Input className='text-xl font-semibold mb-2' value={info.userCredentials.name || ''} readOnly />
+                <Input className='text-gray-600 mb-2' value={info.userCredentials.email || ''} readOnly />
                 <Input 
                   type='text' 
-                  value={loggedInUser.phone || ''} 
+                  value={info.userCredentials.phone || ''} 
                   placeholder='Phone Number' 
                   className='w-full p-2 border rounded mb-4'
-                  onChange={(e) => setLoggedInUser({ ...loggedInUser, phone: e.target.value })}
+                  onChange={(e) => setLoggedInUser({ ...info.userCredentials, phone: e.target.value })}
                 />
                 <Input 
                   type={showPassword ? 'text' : 'password'} 

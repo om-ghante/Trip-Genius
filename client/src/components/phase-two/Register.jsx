@@ -99,9 +99,10 @@ const Register = ({ closePopup, openPopup }) => {
                 body: JSON.stringify({ name, email, phone, password })
             });
             const result = await response.json();
-            const { success, message, error, userCredentialsResult } = result;
+            const { success, message, userCredentialsResult } = result;
             if (success) {
                 handleSuccess(message);
+
                 localStorage.setItem('userCredentials', JSON.stringify(userCredentialsResult));
                 setTimeout(() => {
                     navigate('/dashboard/*')

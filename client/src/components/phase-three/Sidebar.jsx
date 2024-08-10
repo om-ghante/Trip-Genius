@@ -68,11 +68,13 @@ const Sidebar = () => {
                 <Badge overlap="circular" withBorder>
                     <InboxIcon className="h-6 w-6 sm:h-7 sm:w-7 cursor-pointer" />
                 </Badge>
-                <NavLink to="profile">
-                    <Badge overlap="circular" withBorder>
+                
+                <Badge overlap="circular" withBorder>
+                    <NavLink to="profile">
                         <UserCircleIcon className="h-6 w-6 sm:h-7 sm:w-7 cursor-pointer" />
-                    </Badge>
-                </NavLink>
+                    </NavLink>
+                </Badge>
+
                 <Badge overlap="circular" withBorder>
                     <BellIcon className="h-6 w-6 sm:h-7 sm:w-7 cursor-pointer" />
                 </Badge>
