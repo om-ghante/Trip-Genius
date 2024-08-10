@@ -1,4 +1,6 @@
-const { oauth2client } = require('../utils/googleConfig');
+const express = require('express');
+const app = express();
+const { oauth2client } = require('../utils/gConfig');
 const axios = require('axios');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
