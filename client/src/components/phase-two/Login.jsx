@@ -16,21 +16,21 @@ const Login = ({ closePopup, openrPopup, openfPopup }) => {
     })
 
     const responseGoogle = async (authResult) => {
-      try {
-        if (authResult.code) {
-          const result = await googleAuth(authResult.code); 
-          const { email, name, image } = result.data.user;
-          const token = result.data.token;
-          const obj = {email, name, image, token};
-          localStorage.setItem('user-info',JSON.stringify(obj));
-          console.log('token', token)
-          console.log('result', result.data.user);
-          navigate("/dashboard/*");
+        try {
+            if (authResult.code) {
+                
+                const result = await googleAuth(authResult.code); 
+                const { userCredentialsResult } = result.data;
+                localStorage.setItem('userCredentials', JSON.stringify(userCredentialsResult));
+                handleSuccess('Welcome To Trip Genius!');
+                setTimeout(() => {
+                    navigate('/dashboard/*')
+                }, 2000)
+
+            }
+        } catch (err) {
+            console.error('Error while requesting Google code', err);
         }
-        console.log(authResult);
-      } catch (err) {
-        console.error('Error while Requesting google code', err);
-      }
     };
   
     const googleAuth = async (code) => {
@@ -88,11 +88,10 @@ const Login = ({ closePopup, openrPopup, openfPopup }) => {
                 body: JSON.stringify(loginInfo)
             });
             const result = await response.json();
-            const { success, message, jwtToken, name, error } = result;
+            const { success, message, userCredentialsResult } = result;
             if (success) {
                 handleSuccess(message);
-                localStorage.setItem('token', jwtToken);
-                localStorage.setItem('loggedInUser', name);
+                localStorage.setItem('userCredentials', JSON.stringify(userCredentialsResult));
                 setTimeout(() => {
                     navigate('/dashboard/*')
                 }, 1000)

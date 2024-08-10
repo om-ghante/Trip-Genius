@@ -141,7 +141,7 @@ const SidebarList = ({requestDilogOpen}) => {
                         </ListItemSuffix>
                     </ListItem>
                 </NavLink>
-                <NavLink to="sample">
+                <NavLink to="profile">
                     <ListItem>
                         <ListItemPrefix>
                             <UserCircleIcon className="h-5 w-5" />

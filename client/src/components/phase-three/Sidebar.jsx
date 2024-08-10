@@ -29,27 +29,24 @@ import { handleError, handleSuccess } from '../phase-zero/utils';
 import {useNavigate, NavLink, Outlet } from "react-router-dom";
 import SidebarList from "./SidebarList";
 
+  
+
+
 const Sidebar = () => {
     const [openDilog, setDilogOpen] = React.useState(false);
     const [open, setOpen] = React.useState(false);
     const [openAlert, setOpenAlert] = React.useState(false);
-
-    const [loggedInUser, setLoggedInUser] = useState('');
     const navigate = useNavigate();
 
-    useEffect(() => {
-        setLoggedInUser(localStorage.getItem('loggedInUser'))
-    }, [])
-
-    const handleLogout = (e) => {
+    const handleLogout = () => { 
         setDilogOpen(!openDilog)
-        localStorage.removeItem('token');
-        localStorage.removeItem('loggedInUser');
-        handleSuccess('User Loggedout');
-        setTimeout(() => {
-            navigate('/');
-        }, 1000)
-    }
+            localStorage.removeItem('userCredentials');
+            handleSuccess('User Loggedout');
+            setTimeout(() => {
+                navigate('/');
+            }, 1000) 
+      };
+    
 
     const openDrawer = () => setOpen(true);
     const closeDrawer = () => setOpen(false);
@@ -71,9 +68,11 @@ const Sidebar = () => {
                 <Badge overlap="circular" withBorder>
                     <InboxIcon className="h-6 w-6 sm:h-7 sm:w-7 cursor-pointer" />
                 </Badge>
-                <Badge overlap="circular" withBorder>
-                    <UserCircleIcon className="h-6 w-6 sm:h-7 sm:w-7 cursor-pointer" />
-                </Badge>
+                <NavLink to="profile">
+                    <Badge overlap="circular" withBorder>
+                        <UserCircleIcon className="h-6 w-6 sm:h-7 sm:w-7 cursor-pointer" />
+                    </Badge>
+                </NavLink>
                 <Badge overlap="circular" withBorder>
                     <BellIcon className="h-6 w-6 sm:h-7 sm:w-7 cursor-pointer" />
                 </Badge>
@@ -135,7 +134,7 @@ const Sidebar = () => {
         </Drawer>
         <Dialog open={openDilog} handler={handleDilogOpen}>
             <DialogHeader>
-                <Alert className="rounded-none border-l-4 border-red-500 bg-red-100 font-medium text-red-500" icon={<Icon />}>Hello, {loggedInUser} Are you sure you want to log out?</Alert>
+                <Alert className="rounded-none border-l-4 border-red-500 bg-red-100 font-medium text-red-500" icon={<Icon />}>Hello, Are you sure you want to log out?</Alert>
             </DialogHeader>
             <DialogBody>
                 Logging out is a chance to recharge and refocus. Every time you step away, you're preparing for a stronger comeback. See you next time!

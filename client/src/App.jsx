@@ -10,6 +10,7 @@ import Dashboard from './components/phase-zero/Dashboard';
 import Sampletwo from './components/phase-zero/sampletwo';
 import RefrshHandler from './components/phase-zero/RefrshHandler';
 import PageNotFound from './components/phase-zero/PageNotFound';
+import UserProfile from './components/phase-three/UserProfile';
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -34,7 +35,8 @@ function App() {
           <Route path="/" element={<GoogleAuthWrapper />} />
           <Route path="*" element={<PageNotFound />} />
           <Route path="/dashboard/*" element={<Dashboard />}>
-            <Route index path="sample" element={<Sample />} />
+            <Route index path="profile" element={<UserProfile />}/>
+            <Route path="sample" element={<Sample />} />
             <Route path="sampletwo" element={<Sampletwo />} />
           </Route>
         </Routes>
