@@ -2,15 +2,55 @@ import React, { useState } from 'react';
 import { ToastContainer } from 'react-toastify';
 import { handleError, handleSuccess } from '../phase-zero/utils';
 import { useNavigate } from 'react-router-dom';
+import { useGoogleLogin } from '@react-oauth/google';
+import axios from 'axios';
 import { Input, Typography, Button } from '@material-tailwind/react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 
 const Login = ({ closePopup, openrPopup, openfPopup }) => {
+    const server_api = import.meta.env.VITE_SERVER_API;
     const [loginInfo, setLoginInfo] = useState({
         email: '',
         password: ''
     })
+
+    const responseGoogle = async (authResult) => {
+      try {
+        if (authResult.code) {
+          const result = await googleAuth(authResult.code); 
+          const { email, name, image } = result.data.user;
+          const token = result.data.token;
+          const obj = {email, name, image, token};
+          localStorage.setItem('user-info',JSON.stringify(obj));
+          console.log('token', token)
+          console.log('result', result.data.user);
+          navigate("/dashboard/*");
+        }
+        console.log(authResult);
+      } catch (err) {
+        console.error('Error while Requesting google code', err);
+      }
+    };
+  
+    const googleAuth = async (code) => {
+      try {
+        const url = `${server_api}/auth/google`
+        const response = await axios.get(url, { params: { code } }); 
+        return response;
+      } catch (error) {
+        console.error('Error during server-side Google authentication', error);
+        throw error;
+      }
+    };
+    
+  
+  
+    const googlelogin = useGoogleLogin({
+      onSuccess: responseGoogle,
+      onError: responseGoogle,
+      flow: 'auth-code',
+    });
 
     const switchToForgotPass = () => {
         closePopup();
@@ -31,8 +71,6 @@ const Login = ({ closePopup, openrPopup, openfPopup }) => {
         copyLoginInfo[name] = value;
         setLoginInfo(copyLoginInfo);
     }
-
-    const server_api = import.meta.env.VITE_SERVER_API;
     
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -113,6 +151,7 @@ const Login = ({ closePopup, openrPopup, openfPopup }) => {
                     </div>
 
                     <Button onClick={handleSubmit}>Log In</Button>
+                    <Button onClick={googlelogin}>Login With Google</Button>
 
                     <Typography variant='small' className='mt-4 flex justify-center'>
                         Don't have an account?

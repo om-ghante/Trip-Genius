@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import {useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import { ToastContainer } from 'react-toastify';
+import { useGoogleLogin } from '@react-oauth/google';
 import { handleError, handleSuccess } from '../phase-zero/utils';
 import { 
     Input,
@@ -15,6 +17,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 
 const Register = ({ closePopup, openPopup }) => {
+    const server_api = import.meta.env.VITE_SERVER_API;
     const [signupInfo, setSignupInfo] = useState({
         name: '',
         email: '',
@@ -30,6 +33,43 @@ const Register = ({ closePopup, openPopup }) => {
 
     const navigate = useNavigate();
 
+    const responseGoogle = async (authResult) => {
+      try {
+        if (authResult.code) {
+          const result = await googleAuth(authResult.code); 
+          const { email, name, image } = result.data.user;
+          const token = result.data.token;
+          const obj = {email, name, image, token};
+          localStorage.setItem('user-info',JSON.stringify(obj));
+          console.log('token', token)
+          console.log('result', result.data.user);
+          navigate("/dashboard/*");
+        }
+        console.log(authResult);
+      } catch (err) {
+        console.error('Error while Requesting google code', err);
+      }
+    };
+  
+    const googleAuth = async (code) => {
+      try {
+        const url = `${server_api}/auth/google`;
+        const response = await axios.get(url, { params: { code } }); 
+        return response;
+      } catch (error) {
+        console.error('Error during server-side Google authentication', error);
+        throw error;
+      }
+    };
+    
+  
+  
+    const googlelogin = useGoogleLogin({
+      onSuccess: responseGoogle,
+      onError: responseGoogle,
+      flow: 'auth-code',
+    });
+  
     const handleChange = (e) => {
         const { name, value } = e.target;
         console.log(name, value);
@@ -38,7 +78,7 @@ const Register = ({ closePopup, openPopup }) => {
         setSignupInfo(copySignupInfo);
     }
 
-    const server_api = import.meta.env.VITE_SERVER_API;
+    
     
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -100,7 +140,7 @@ const Register = ({ closePopup, openPopup }) => {
                     <Input label='Re-Enter Password' type='password' name='password' value={signupInfo.password} onChange={handleChange}/>
 
                     <Button className='mt-4' onClick={handleSubmit}>Register</Button>
-
+                    <Button onClick={googlelogin}>Login With Google</Button>
                     <Typography variant='small' className='mt-4 flex justify-center'>
                         <p>Already have an account?</p>
                         <Typography variant='small' className='ml-1 font-bold cursor-pointer' onClick={switchpage}>Log In</Typography>
