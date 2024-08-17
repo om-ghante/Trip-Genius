@@ -2,7 +2,7 @@
   <div style="flex: 1;">
     <h3 style="margin: 0; font-size: 30px;">Welcome Trip Genius Repository!</h3>
   </div>
-  <div style="flex: 0;">
+  <div style="flex: 1;">
     <img src="./z-other/Logo.jpg" alt="Trip Genius Logo" style="border-radius: 50%; height: 100px; width: 100px;">
   </div>
 </div>
