@@ -1,15 +1,13 @@
-<table width="100%" cellpadding="20">
-  <tr>
-    <td align="left">
-      <h3 style="margin: 0; font-size: 30px;">Welcome Trip Genius Repository!</h3>
-    </td>
-    <td align="right">
-      <img src="./z-other/Logo.jpg" alt="Trip Genius Logo" style="border-radius: 50%; height: 100px; width: 100px;">
-    </td>
-  </tr>
-</table>
+<div style="display: flex; justify-content: space-between; align-items: center; padding: 20px;">
+   <div>
+    <h3 style="margin: 0; font-size: 30px;">Welcome Trip Genius Repository!</h3>
+  </div>
+   <div>
+    <img src="./z-other/logo.png" width="128" align="left" />
+  </div>
+</div>
 
-#
+
 ![Repository Banner](./z-other/Trip-Genius.gif)
 
 ## Overview
