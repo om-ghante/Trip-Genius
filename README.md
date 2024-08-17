@@ -1,12 +1,13 @@
 <div style="display: flex; justify-content: space-between; align-items: center; padding: 20px;">
-   <div>
+   <div align="left">
     <h3 style="margin: 0; font-size: 30px;">Welcome Trip Genius Repository!</h3>
   </div>
-   <div>
+   <div align="right">
     <img src="./z-other/logo.png" width="128" align="left" />
   </div>
 </div>
 
+#
 
 ![Repository Banner](./z-other/Trip-Genius.gif)
 
