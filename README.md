@@ -5,6 +5,9 @@
     <img src="./z-other/logo.png" width="128" align="right" />
   </div>
 
+
+***
+
 ![Repository Banner](./z-other/Trip-Genius.gif)
 
 ## Overview
