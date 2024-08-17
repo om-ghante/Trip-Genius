@@ -33,11 +33,11 @@ To get started with Trip Genius locally, follow these steps:
 1. **Clone the Repository**
 
    ```bash
-   git clone https://github.com/om-ghante/trip-genius.git
+   git clone https://github.com/om-ghante/Trip-Genius.git
 2. **Change the work derectory**
 
    ```bash
-   cd trip-genius
+   cd Trip-Genius
 3. **Frontend setup**
 
    ```bash
