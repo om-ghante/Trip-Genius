@@ -43,16 +43,16 @@ To get started with Trip Genius locally, follow these steps:
    ```bash
    cd client
    npm install
-4. **Backend setup**
+5. **Backend setup**
 
    ```bash
    cd ../server
    npm install
-4. **Configure Environment Variables for fronted**
+6. **Configure Environment Variables for fronted**
 
    ```bash
    VITE_SERVER_API=http://localhost:7173
-4. **Configure Environment Variables for backend**
+7. **Configure Environment Variables for backend**
 
    ```bash
    ORIGIN_API=http://localhost:5173
@@ -62,12 +62,12 @@ To get started with Trip Genius locally, follow these steps:
    DATABASE_API=your_mongodb_connection_string
    GOOGLE_CLIENT_ID=your_google_client_id
    GOOGLE_CLIENT_SECRET=your_google_client_secret
-3. **Start the Development Servers**
+8. **Start the Development Servers**
 
    ```bash
    cd client
    npm run dev
-4. **Start the Development Servers**
+9. **Start the Development Servers**
 
    ```bash
    cd ../server
